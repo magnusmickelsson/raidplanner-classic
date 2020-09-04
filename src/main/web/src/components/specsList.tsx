@@ -10,11 +10,7 @@ interface SpecsListProps {
 const SpecsList: React.FC<SpecsListProps> = ({ specs }) => {
   const specsRows = specs.map((spec, i) => <Spec key={i} spec={spec} />)
 
-  return (
-    <List component="nav" style={{ maxWidth: 256, marginTop: 12 }}>
-      {specsRows}
-    </List>
-  )
+  return <List>{specsRows}</List>
 }
 
 export default SpecsList

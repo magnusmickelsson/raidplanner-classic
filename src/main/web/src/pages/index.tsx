@@ -7,7 +7,9 @@ import SpecsList from "../components/specsList"
 import { ClassSpecType } from "../types/api"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
-import { Paper } from "@material-ui/core"
+import { Paper, Box } from "@material-ui/core"
+import RaidGrid from "../components/raidGrid"
+import { partySize } from "../constants/wow"
 
 interface SpecsByClasses {
   [key: string]: ClassSpecType[]
@@ -32,7 +34,7 @@ const IndexPage: React.FC = () => {
 
   const specsLists = Object.keys(specsByClasses).map((specs, i) => {
     return (
-      <Paper key={i} style={{ maxWidth: 256 }}>
+      <Paper key={i} style={{ maxWidth: 256, marginTop: 12 }}>
         <SpecsList specs={specsByClasses[specs]} />
       </Paper>
     )
@@ -48,8 +50,11 @@ const IndexPage: React.FC = () => {
             Welcome to the Debuff Planner. Here you can set up a raid and plan
             accordingly.
           </p>
+          <Box display="flex" flexDirection="row">
+            <Box style={{ marginRight: 64 }}>{specsLists}</Box>
+            <RaidGrid numParties={40 / partySize} /> {/* Depends on raid*/}
+          </Box>
         </Container>
-        {specsLists}
       </Layout>
     </DndProvider>
   )
