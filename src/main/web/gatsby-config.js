@@ -27,6 +27,15 @@ module.exports = {
         icon: `static/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
     },
+    {
+      resolve: `gatsby-plugin-material-ui`,
+      options: {
+        stylesProvider: {
+          injectFirst: true,
+        },
+      },
+    },
+    `custom-mui-theme`,
     `gatsby-plugin-emotion`,
     {
       resolve: `gatsby-plugin-typography`,

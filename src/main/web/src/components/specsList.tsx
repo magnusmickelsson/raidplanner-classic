@@ -1,21 +1,20 @@
-import React, { useState, useEffect } from "react"
-import { fetchSpecs } from "../actions/fetch"
+import React from "react"
 import { ClassSpecType } from "../types/api"
-import { useDrag } from "react-dnd"
 import Spec from "./spec"
+import List from "@material-ui/core/List"
 
-const SpecsList: React.FC = () => {
-  const [specs, setSpecs] = useState<ClassSpecType[]>([])
+interface SpecsListProps {
+  specs: ClassSpecType[]
+}
 
-  useEffect(() => {
-    fetchSpecs().then(specs => {
-      setSpecs(specs)
-    })
-  }, [])
-
+const SpecsList: React.FC<SpecsListProps> = ({ specs }) => {
   const specsRows = specs.map((spec, i) => <Spec key={i} spec={spec} />)
 
-  return <ul>{specsRows}</ul>
+  return (
+    <List component="nav" style={{ maxWidth: 256, marginTop: 12 }}>
+      {specsRows}
+    </List>
+  )
 }
 
 export default SpecsList

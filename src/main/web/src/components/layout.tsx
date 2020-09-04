@@ -19,6 +19,10 @@ const StyledLayout = styled.div`
   padding: 0 1rem;
 `
 
+const StyledFooter = styled.footer`
+  margin-top: 32px;
+`
+
 const Layout: React.FC = ({ children }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
@@ -36,11 +40,11 @@ const Layout: React.FC = ({ children }) => {
       <StyledLayout>
         <Container>
           <main>{children}</main>
-          <footer>
+          <StyledFooter>
             © {new Date().getFullYear()}, Built with
             {` `}
             <a href="https://www.gatsbyjs.org">Gatsby</a>
-          </footer>
+          </StyledFooter>
         </Container>
       </StyledLayout>
     </>

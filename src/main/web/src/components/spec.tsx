@@ -1,6 +1,8 @@
 import React from "react"
 import { ClassSpecType } from "../types/api"
 import { useDrag } from "react-dnd"
+import ListItem from "@material-ui/core/ListItem"
+import ListItemText from "@material-ui/core/ListItemText"
 
 interface SpecProps {
   spec: ClassSpecType
@@ -17,9 +19,9 @@ const Spec: React.FC<SpecProps> = ({ spec }) => {
   const opacity = isDragging ? 0.4 : 1
 
   return (
-    <li style={{ opacity }} ref={dragRef}>
-      {spec.specName}
-    </li>
+    <ListItem button style={{ opacity }} ref={dragRef}>
+      <ListItemText primary={spec.specName} />
+    </ListItem>
   )
 }
 
