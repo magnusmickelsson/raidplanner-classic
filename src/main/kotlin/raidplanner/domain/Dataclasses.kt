@@ -4,11 +4,11 @@ data class ClassSpec(val specName: String, val className: WowClassName, val canA
 
 data class DebuffItem(val name: String, val effect: List<Debuff>)
 
-fun dot(name: String) = Debuff(name, DebuffEffectType(), overwrites = false)
+fun dot(name: String) = Debuff(name, overwrites = false)
 
-data class Debuff(val name: String, val effectType: DebuffEffectType, val overwrites: Boolean = true)
+data class Debuff(val name: String, val effectType: DebuffEffectType = DebuffEffectType(), val overwrites: Boolean = true)
 
-// TODO: Add a field to keep track of the damage something does, like SWP or Corruption or Deep Wounds
+// TODO: Add a field to keep track of the damage something does, like SWP or Corruption or Deep Wounds?
 data class DebuffEffectType(val statModifiers: List<StatModifier> = emptyList(), val damageModifiers: List<DamageModifier> = emptyList())
 
 data class StatModifier(val modifierType: StatType, val modifierValue: Int, val stackTimes: Int = 1) // Increases physical damage taken by X or reduces shadow resistance by X

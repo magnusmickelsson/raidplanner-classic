@@ -29,7 +29,7 @@ class DomainRepository {
             swp,
             nightfall.effect.first(),
             hunterMark,
-            Debuff("Buffer for effects like taunt", DebuffEffectType())
+            Debuff("Buffer for effects like taunt")
     ))
 
     companion object {
