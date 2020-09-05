@@ -1,41 +1,31 @@
-import React, { useState, useEffect } from "react"
-import { fetchSpecs } from "../actions/fetch"
+import React, { useEffect } from "react"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import Container from "../components/container"
-import SpecsList from "../components/specsList"
-import { ClassSpecType } from "../types/api"
+import SpecsList from "../components/spec/specsList"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { Paper, Box } from "@material-ui/core"
-import RaidGrid from "../components/raidGrid"
+import { useSelector, useDispatch } from "react-redux"
+import RaidGrid from "../components/raid/raidGrid"
 import { partySize } from "../constants/wow"
-
-interface SpecsByClasses {
-  [key: string]: ClassSpecType[]
-}
+import { appSelector, getSpecs } from "../state/app"
+import { specsByClasses } from "../utils/appUtils"
 
 const IndexPage: React.FC = () => {
-  const [specs, setSpecs] = useState<ClassSpecType[]>([])
+  const { specs, gridValues } = useSelector(appSelector)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    fetchSpecs().then(specs => {
-      setSpecs(specs)
-    })
+    dispatch(getSpecs())
   }, [])
 
-  const specsByClasses: SpecsByClasses = {}
+  const _specsByClasses = specsByClasses(specs)
 
-  specs.forEach(spec => {
-    if (specsByClasses[spec.className])
-      specsByClasses[spec.className].push(spec)
-    else specsByClasses[spec.className] = [spec]
-  })
-
-  const specsLists = Object.keys(specsByClasses).map((specs, i) => {
+  const specsLists = Object.keys(_specsByClasses).map((specs, i) => {
     return (
       <Paper key={i} style={{ maxWidth: 256, marginTop: 12 }}>
-        <SpecsList specs={specsByClasses[specs]} />
+        <SpecsList specs={_specsByClasses[specs]} />
       </Paper>
     )
   })
@@ -52,7 +42,7 @@ const IndexPage: React.FC = () => {
           </p>
           <Box display="flex" flexDirection="row">
             <Box style={{ marginRight: 64 }}>{specsLists}</Box>
-            <RaidGrid numParties={40 / partySize} /> {/* Depends on raid*/}
+            <RaidGrid gridValues={gridValues} numParties={40 / partySize} />
           </Box>
         </Container>
       </Layout>

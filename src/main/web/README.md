@@ -1,8 +1,7 @@
 ## How to run locally
 
-* Navigate to src/main/web in a terminal
-* Run "yarn install"
-* Run "yarn dev"
+* Run `yarn install`
+* Run `yarn dev`
 * Open up your browser and navigate to http://localhost:8000/
 
 ## Tech
@@ -11,7 +10,9 @@
 * React
 * TypeScript
 * Material-UI
+* Redux
 * GraphQL
 * ESLint
 * Prettier
 * Emotion
+* ...and more

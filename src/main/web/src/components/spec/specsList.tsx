@@ -1,5 +1,5 @@
 import React from "react"
-import { ClassSpecType } from "../types/api"
+import { ClassSpecType } from "../../types/api"
 import Spec from "./spec"
 import List from "@material-ui/core/List"
 
