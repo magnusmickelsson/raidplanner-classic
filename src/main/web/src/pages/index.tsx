@@ -9,15 +9,17 @@ import { Paper, Box } from "@material-ui/core"
 import { useSelector, useDispatch } from "react-redux"
 import RaidGrid from "../components/raid/raidGrid"
 import { partySize } from "../constants/wow"
-import { appSelector, getSpecs } from "../state/app"
-import { specsByClasses } from "../utils/appUtils"
+import { appSelector, getSpecs, getDebuffs } from "../state/app"
+import { specsByClasses, getDebuffsFromGrid } from "../utils/appUtils"
+import DebuffList from "../components/debuff/debuffList"
 
 const IndexPage: React.FC = () => {
-  const { specs, gridValues } = useSelector(appSelector)
+  const { specs, gridValues, debuffs } = useSelector(appSelector)
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(getSpecs())
+    dispatch(getDebuffs())
   }, [])
 
   const _specsByClasses = specsByClasses(specs)
@@ -30,6 +32,8 @@ const IndexPage: React.FC = () => {
     )
   })
 
+  const activeDebuffs = getDebuffsFromGrid(gridValues, specs, 40 / partySize)
+
   return (
     <DndProvider backend={HTML5Backend}>
       <Layout>
@@ -41,8 +45,11 @@ const IndexPage: React.FC = () => {
             accordingly.
           </p>
           <Box display="flex" flexDirection="row">
-            <Box style={{ marginRight: 64 }}>{specsLists}</Box>
+            <Box style={{ minWidth: 220, marginRight: 64 }}>{specsLists}</Box>
             <RaidGrid gridValues={gridValues} numParties={40 / partySize} />
+            <Box style={{ marginLeft: 48 }}>
+              <DebuffList debuffs={debuffs} activeDebuffs={activeDebuffs} />
+            </Box>
           </Box>
         </Container>
       </Layout>

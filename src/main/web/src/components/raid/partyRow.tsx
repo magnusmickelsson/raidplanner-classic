@@ -27,7 +27,9 @@ const PartyRow: React.FC<PartyRowProps> = ({ grid, row, value }) => {
 
   return (
     <TableRow selected={isOver} ref={drop}>
-      <TableCell align="center">{value}</TableCell>
+      <TableCell style={{ height: 64 }} align="center">
+        {value}
+      </TableCell>
     </TableRow>
   )
 }

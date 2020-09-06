@@ -14,8 +14,6 @@ import Container from "./container"
 
 const StyledLayout = styled.div`
   margin: 3rem auto;
-  max-width: 960px;
-  width: fit-content;
   padding: 0 1rem;
 `
 

@@ -9,7 +9,7 @@ interface SpecProps {
   spec: ClassSpecType
 }
 
-const Spec: React.FC<SpecProps> = ({ spec }) => {
+const SpecItem: React.FC<SpecProps> = ({ spec }) => {
   const [{ isDragging }, drag] = useDrag({
     item: { type: ItemTypes.SPEC, value: spec.specName },
     collect: monitor => ({
@@ -26,4 +26,4 @@ const Spec: React.FC<SpecProps> = ({ spec }) => {
   )
 }
 
-export default Spec
+export default SpecItem
