@@ -7,6 +7,7 @@ export const ItemTypes = {
 export interface SpecDragItemType {
   type: string
   value: string
+  prevGridValue: GridValue
 }
 
 export interface SpecsByClasses {
