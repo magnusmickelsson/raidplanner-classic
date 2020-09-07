@@ -17,7 +17,7 @@ const RaidGrid: React.FC<RaidGridProps> = ({ numParties, gridValues }) => {
   }
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} style={{ height: "fit-content" }}>
       {grids}
     </Grid>
   )

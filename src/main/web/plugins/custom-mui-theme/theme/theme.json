@@ -113,7 +113,7 @@
       "color": "rgba(0, 0, 0, 0.87)",
       "fontFamily": "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
       "lineHeight": "1.71429em",
-      "fontSize": "0.875rem",
+      "fontSize": "0.625rem",
       "fontWeight": 500
     },
     "caption": {

@@ -10,8 +10,12 @@ interface DebuffItemProps {
 
 const DebuffItem: React.FC<DebuffItemProps> = ({ debuff, activated }) => {
   return (
-    <ListItem disabled={!activated} style={{ marginBottom: 0 }}>
-      <Chip label={debuff.name} />
+    <ListItem disabled={!activated} style={{ marginBottom: 2 }}>
+      <Chip
+        color={!activated ? "default" : "primary"}
+        size="small"
+        label={debuff.name}
+      />
     </ListItem>
   )
 }

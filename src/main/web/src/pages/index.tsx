@@ -40,13 +40,13 @@ const IndexPage: React.FC = () => {
         <SEO title="Home" description="" lang="en" meta={[]} />
         <Container>
           <h1>Debuff Planner</h1>
-          <p>
-            Welcome to the Debuff Planner. Here you can set up a raid and plan
-            accordingly.
-          </p>
           <Box display="flex" flexDirection="row">
-            <Box style={{ minWidth: 220, marginRight: 64 }}>{specsLists}</Box>
-            <RaidGrid gridValues={gridValues} numParties={40 / partySize} />
+            <Box display="flex" flexDirection="row">
+              <Box style={{ minWidth: 220, marginRight: 64 }}>{specsLists}</Box>
+              <Box style={{ marginTop: "auto", marginBottom: "auto" }}>
+                <RaidGrid gridValues={gridValues} numParties={40 / partySize} />
+              </Box>
+            </Box>
             <Box style={{ marginLeft: 48 }}>
               <DebuffList debuffs={debuffs} activeDebuffs={activeDebuffs} />
             </Box>

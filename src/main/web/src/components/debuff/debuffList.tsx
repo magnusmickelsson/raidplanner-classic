@@ -17,7 +17,11 @@ const DebuffList: React.FC<DebuffListProps> = ({ debuffs, activeDebuffs }) => {
     />
   ))
 
-  return <List>{debuffRows}</List>
+  return (
+    <List dense disablePadding>
+      {debuffRows}
+    </List>
+  )
 }
 
 export default DebuffList

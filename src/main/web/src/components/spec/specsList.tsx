@@ -10,7 +10,7 @@ interface SpecsListProps {
 const SpecsList: React.FC<SpecsListProps> = ({ specs }) => {
   const specsRows = specs.map((spec, i) => <SpecItem key={i} spec={spec} />)
 
-  return <List>{specsRows}</List>
+  return <List dense>{specsRows}</List>
 }
 
 export default SpecsList
