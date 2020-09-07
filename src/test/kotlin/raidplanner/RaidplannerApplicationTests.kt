@@ -9,5 +9,4 @@ class RaidplannerApplicationTests {
 	@Test
 	fun contextLoads() {
 	}
-
 }
