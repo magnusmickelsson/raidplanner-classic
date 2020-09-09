@@ -11,6 +11,13 @@ import { useStaticQuery, graphql } from "gatsby"
 import styled from "@emotion/styled"
 import Header from "./header"
 import Container from "./container"
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Button,
+} from "@material-ui/core"
 
 const StyledLayout = styled.div`
   margin: 3rem auto;
@@ -34,14 +41,23 @@ const Layout: React.FC = ({ children }) => {
 
   return (
     <>
-      <Header siteTitle={data.site.siteMetadata.title} />
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h4" style={{ flexGrow: 1 }}>
+            Raid Planner Classic
+          </Typography>
+          <Button color="inherit">About</Button>
+        </Toolbar>
+      </AppBar>
       <StyledLayout>
         <Container>
           <main>{children}</main>
           <StyledFooter>
-            © {new Date().getFullYear()}, Built with
-            {` `}
-            <a href="https://www.gatsbyjs.org">Gatsby</a>
+            <Typography variant="subtitle1">
+              © {new Date().getFullYear()}, Built with
+              {` `}
+              <a href="https://www.gatsbyjs.org">Gatsby</a>
+            </Typography>
           </StyledFooter>
         </Container>
       </StyledLayout>

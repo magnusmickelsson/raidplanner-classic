@@ -26,7 +26,7 @@ const PartyGrid: React.FC<PartyGridTypes> = ({ partyNum, partyValues }) => {
 
   return (
     <Grid item xs={6} style={{ width: 58, textAlign: "center" }}>
-      <Typography variant={"h7"}>{partyNum}</Typography>
+      <Typography variant={"h6"}>{partyNum}</Typography>
       <TableContainer component={Paper}>
         <Table size="small" style={{ margin: 0 }}>
           <TableBody>{rows}</TableBody>
