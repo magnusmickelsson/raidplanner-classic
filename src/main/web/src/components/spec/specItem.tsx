@@ -6,12 +6,13 @@ import ListItemText from "@material-ui/core/ListItemText"
 import { ItemTypes } from "../../types/app"
 
 interface SpecProps {
+  color: string
   spec: ClassSpecType
 }
 
-const SpecItem: React.FC<SpecProps> = ({ spec }) => {
+const SpecItem: React.FC<SpecProps> = ({ color, spec }) => {
   const [{ isDragging }, drag] = useDrag({
-    item: { type: ItemTypes.SPEC, value: spec.specName },
+    item: { type: ItemTypes.SPEC, value: spec.specName, color: color },
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),
     }),
@@ -20,7 +21,7 @@ const SpecItem: React.FC<SpecProps> = ({ spec }) => {
   const opacity = isDragging ? 0.4 : 1
 
   return (
-    <ListItem button style={{ opacity }} ref={drag}>
+    <ListItem button style={{ opacity, backgroundColor: color }} ref={drag}>
       <ListItemText primary={spec.specName} />
     </ListItem>
   )

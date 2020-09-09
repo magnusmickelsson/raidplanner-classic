@@ -167,8 +167,8 @@ class DomainRepository {
                         )
                 )
                 ),
-                ClassSpec("Dagger", WowClassName.ROUGE, rogueDebuffs()),
-                ClassSpec("Sword", WowClassName.ROUGE, rogueDebuffs())
+                ClassSpec("Dagger", WowClassName.ROGUE, rogueDebuffs()),
+                ClassSpec("Sword", WowClassName.ROGUE, rogueDebuffs())
         )
     }
 

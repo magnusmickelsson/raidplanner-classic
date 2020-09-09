@@ -1,5 +1,15 @@
 import { createMuiTheme } from "@material-ui/core/styles"
-import themeData from "./theme.json"
 
-const themeName = "Awesome theme"
-export default createMuiTheme({ ...themeData, themeName })
+export default createMuiTheme({
+  palette: {
+    primary: {
+      main: "#3f51b5",
+    },
+    secondary: {
+      main: "#ff1744",
+    },
+  },
+  typography: {
+    fontSize: 10,
+  },
+})

@@ -8,6 +8,7 @@ export interface SpecDragItemType {
   type: string
   value: string
   prevGridValue: GridValue
+  color: string
 }
 
 export interface SpecsByClasses {
