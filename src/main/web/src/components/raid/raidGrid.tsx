@@ -1,10 +1,11 @@
 import React from "react"
 import { Grid } from "@material-ui/core"
 import PartyGrid from "./partyGrid"
+import { ClassSpecType } from "../../types/api"
 
 interface RaidGridProps {
   numParties: number
-  gridValues: string[][]
+  gridValues: ClassSpecType[][]
 }
 
 const RaidGrid: React.FC<RaidGridProps> = ({ numParties, gridValues }) => {

@@ -9,15 +9,8 @@ import React from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
 import styled from "@emotion/styled"
-import Header from "./header"
 import Container from "./container"
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
-  Button,
-} from "@material-ui/core"
+import { AppBar, Toolbar, Typography, Button } from "@material-ui/core"
 
 const StyledLayout = styled.div`
   margin: 3rem auto;

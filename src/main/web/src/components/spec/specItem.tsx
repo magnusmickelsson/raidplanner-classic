@@ -4,24 +4,40 @@ import { useDrag } from "react-dnd"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
 import { ItemTypes } from "../../types/app"
+import { makeStyles } from "@material-ui/core/styles"
 
 interface SpecProps {
   color: string
   spec: ClassSpecType
 }
 
+const useStyles = makeStyles({
+  root: {
+    "&:hover": {
+      opacity: "0.5 !important",
+    },
+  },
+})
+
 const SpecItem: React.FC<SpecProps> = ({ color, spec }) => {
+  const classes = useStyles()
+
   const [{ isDragging }, drag] = useDrag({
-    item: { type: ItemTypes.SPEC, value: spec.specName, color: color },
+    item: { type: ItemTypes.SPEC, value: spec, color: color },
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),
     }),
   })
 
-  const opacity = isDragging ? 0.4 : 1
+  const opacity = isDragging ? 0.35 : 1
 
   return (
-    <ListItem button style={{ opacity, backgroundColor: color }} ref={drag}>
+    <ListItem
+      className={classes.root}
+      component="div"
+      style={{ opacity: opacity, backgroundColor: color, cursor: "move" }}
+      ref={drag}
+    >
       <ListItemText primary={spec.specName} />
     </ListItem>
   )
