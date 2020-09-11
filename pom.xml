@@ -92,6 +92,26 @@
 				</dependencies>
 			</plugin>
 			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/classes/static/</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/web/public/</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
@@ -114,7 +134,59 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<!-- requires maven 3.1+ -->
+				<version>1.9.1</version>
+				<configuration>
+					<workingDirectory>src/main/web</workingDirectory>
+					<installDirectory>target</installDirectory>
+					<yarnInheritsProxyConfigFromMaven>false</yarnInheritsProxyConfigFromMaven>
+				</configuration>
+
+				<executions>
+					<execution>
+						<id>install node and yarn</id>
+						<goals>
+							<goal>install-node-and-yarn</goal>
+						</goals>
+						<configuration>
+							<nodeVersion>v12.18.3</nodeVersion>
+							<yarnVersion>v1.22.5</yarnVersion>
+						</configuration>
+					</execution>
+					<execution>
+						<id>yarn install</id>
+						<goals>
+							<goal>yarn</goal>
+						</goals>
+						<configuration>
+							<workingDirectory>src/main/web</workingDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>yarn clean</id>
+						<goals>
+							<goal>yarn</goal>
+						</goals>
+						<configuration>
+							<arguments>clean</arguments>
+							<workingDirectory>src/main/web</workingDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>yarn build</id>
+						<goals>
+							<goal>yarn</goal>
+						</goals>
+						<configuration>
+							<arguments>build</arguments>
+							<workingDirectory>src/main/web</workingDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
-
 </project>
