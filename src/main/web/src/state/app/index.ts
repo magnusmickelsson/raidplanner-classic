@@ -9,7 +9,7 @@ import {
 } from "../../actions/api"
 import { populateGrid } from "../../utils/appUtils"
 import { partySize, factions } from "../../constants/wow"
-import { GridValue, GridAction } from "../../types/app"
+import { GridAction } from "../../types/app"
 
 interface AppState {
   specs: ClassSpecType[]

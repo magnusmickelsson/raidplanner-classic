@@ -1,5 +1,5 @@
 import { partySize } from "../constants/wow"
-import { ClassSpecType, Debuff } from "../types/api"
+import { ClassSpecType } from "../types/api"
 import { SpecsByClasses, GridValue } from "../types/app"
 
 export function populateGrid(numParties: number): ClassSpecType[][] {
