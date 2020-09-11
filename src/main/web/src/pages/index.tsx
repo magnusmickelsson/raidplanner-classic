@@ -28,13 +28,9 @@ import { getDebuffsFromGrid } from "../utils/appUtils"
 import DebuffList from "../components/debuff/debuffList"
 
 const IndexPage: React.FC = () => {
-  const {
-    specs,
-    specsByClass,
-    gridValues,
-    debuffs,
-    selectedFaction,
-  } = useSelector(appSelector)
+  const { specsByClass, gridValues, debuffs, selectedFaction } = useSelector(
+    appSelector,
+  )
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -45,13 +41,13 @@ const IndexPage: React.FC = () => {
 
   const specsLists = Object.keys(specsByClass).map((wowClass, i) => {
     return (
-      <Paper key={i} style={{ marginTop: 12 }}>
+      <Paper key={i} style={{ marginBottom: 8 }}>
         <SpecsList wowClass={wowClass} specs={specsByClass[wowClass]} />
       </Paper>
     )
   })
 
-  const activeDebuffs = getDebuffsFromGrid(gridValues, specs, 40 / partySize)
+  const activeDebuffs = getDebuffsFromGrid(gridValues, 40 / partySize)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = (event.target as HTMLInputElement).value

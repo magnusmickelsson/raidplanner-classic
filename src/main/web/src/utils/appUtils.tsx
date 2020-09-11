@@ -2,7 +2,7 @@ import { partySize } from "../constants/wow"
 import { ClassSpecType, Debuff } from "../types/api"
 import { SpecsByClasses, GridValue } from "../types/app"
 
-export function populateGrid(numParties: number): string[][] {
+export function populateGrid(numParties: number): ClassSpecType[][] {
   const grid = Array(numParties)
   for (let i = 0; i < numParties; i++) {
     grid[i] = Array.from(Array(partySize), () => undefined)
@@ -12,12 +12,12 @@ export function populateGrid(numParties: number): string[][] {
 }
 
 export function findInGrid(
-  grid: string[][],
+  grid: ClassSpecType[][],
   numParties: number,
   value: string,
 ): GridValue | undefined {
   for (let i = 0; i < numParties; i++) {
-    const j = grid[i].findIndex(item => item === value)
+    const j = grid[i].findIndex(item => item.specName === value)
 
     if (j !== -1) return { x: i, y: j, value: grid[i][j] }
   }
@@ -26,11 +26,10 @@ export function findInGrid(
 }
 
 export function getDebuffsFromGrid(
-  grid: string[][],
-  specs: ClassSpecType[],
+  grid: ClassSpecType[][],
   numParties: number,
 ): string[] {
-  let uniqueSpecs: string[] = []
+  let uniqueSpecs: ClassSpecType[] = []
   let uniqueDebuffs: string[] = []
   for (let i = 0; i < numParties; i++) {
     const specsInParty = grid[i].filter(item => item !== undefined)
@@ -38,12 +37,8 @@ export function getDebuffsFromGrid(
   }
 
   uniqueSpecs.forEach(item => {
-    const specObj = specs.find(spec => spec.specName === item)
-
-    if (specObj) {
-      const specDebuffs = specObj.canApplyDebuff.map(item => item.name)
-      uniqueDebuffs = [...new Set([...uniqueDebuffs, ...specDebuffs])]
-    }
+    const specDebuffs = item.canApplyDebuff.map(item => item.name)
+    uniqueDebuffs = [...new Set([...uniqueDebuffs, ...specDebuffs])]
   })
 
   return uniqueDebuffs

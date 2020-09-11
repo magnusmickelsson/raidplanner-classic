@@ -9,13 +9,12 @@ import {
 } from "../../actions/api"
 import { populateGrid } from "../../utils/appUtils"
 import { partySize, factions } from "../../constants/wow"
-import { GridValue } from "../../types/app"
-import { string } from "prop-types"
+import { GridValue, GridAction } from "../../types/app"
 
 interface AppState {
   specs: ClassSpecType[]
   specsByClass: Record<string, ClassSpecType[]>
-  gridValues: string[][]
+  gridValues: ClassSpecType[][] | undefined[][]
   debuffs: Debuff[]
   activeDebuffs: string[]
   selectedFaction: string
@@ -44,9 +43,16 @@ const appSlice = createSlice({
     ) => {
       state.specsByClass = action.payload
     },
-    _setGridValue: (state, action: PayloadAction<GridValue>) => {
-      const { x, y, value } = action.payload
+    _setGridValue: (state, action: PayloadAction<GridAction>) => {
+      const { x, y, value } = action.payload.gridValue
+      const { prev_x, prev_y } = action.payload
       const gridValues = state.gridValues
+
+      if (prev_x !== undefined && prev_y !== undefined) {
+        if (gridValues[x][y]) gridValues[prev_x][prev_y] = gridValues[x][y]
+        else gridValues[prev_x][prev_y] = undefined
+      }
+
       gridValues[x][y] = value
       state.gridValues = gridValues
     },
@@ -97,7 +103,7 @@ export const getSpecsByClassForFaction = (faction: string): Thunk => (
   })
 }
 
-export const setGridValue = (gridValue: GridValue): Thunk => (
+export const setGridValue = (gridValue: GridAction): Thunk => (
   dispatch: Dispatch,
 ) => {
   dispatch(_setGridValue(gridValue))
