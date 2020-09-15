@@ -1,4 +1,5 @@
 export const partySize = 5
+export const numDebuffSlots = 16
 
 export const factions: Record<string, string> = {
   ALLIANCE: "Alliance",

@@ -8,8 +8,8 @@ import {
   fetchSpecsByClassForFaction,
 } from "../../actions/api"
 import { populateGrid } from "../../utils/appUtils"
-import { partySize, factions } from "../../constants/wow"
-import { GridAction } from "../../types/app"
+import { partySize, factions, numDebuffSlots } from "../../constants/wow"
+import { DebuffSlotAction, GridAction } from "../../types/app"
 
 interface AppState {
   specs: ClassSpecType[]
@@ -18,6 +18,7 @@ interface AppState {
   debuffs: Debuff[]
   activeDebuffs: string[]
   selectedFaction: string
+  debuffSlots: Debuff[] | undefined[]
 }
 
 const initialState: AppState = {
@@ -27,6 +28,7 @@ const initialState: AppState = {
   debuffs: [],
   activeDebuffs: [],
   selectedFaction: factions.ALLIANCE.toLowerCase(),
+  debuffSlots: new Array(numDebuffSlots).fill(undefined),
 }
 
 // Slice
@@ -62,6 +64,18 @@ const appSlice = createSlice({
     _selectFaction: (state, action: PayloadAction<string>) => {
       state.selectedFaction = action.payload
     },
+    _setDebuffSlot: (state, action: PayloadAction<DebuffSlotAction>) => {
+      const { i, value, prev_i } = action.payload
+      const { debuffSlots } = state
+
+      if (prev_i !== undefined) {
+        if (debuffSlots[i]) debuffSlots[prev_i] = debuffSlots[i]
+        else debuffSlots[prev_i] = undefined
+      }
+
+      debuffSlots[i] = value
+      state.debuffSlots = debuffSlots
+    },
   },
 })
 
@@ -78,6 +92,7 @@ const {
   _getDebuffs,
   _selectFaction,
   _getSpecsByClassForFaction,
+  _setDebuffSlot,
 } = appSlice.actions
 
 // Thunks
@@ -119,4 +134,10 @@ export const selectFaction = (faction: string): Thunk => (
   dispatch: Dispatch,
 ) => {
   dispatch(_selectFaction(faction))
+}
+
+export const setDebuffSlot = (debuffSlotAction: DebuffSlotAction): Thunk => (
+  dispatch: Dispatch,
+) => {
+  dispatch(_setDebuffSlot(debuffSlotAction))
 }

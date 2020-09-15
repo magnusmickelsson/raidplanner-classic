@@ -26,11 +26,16 @@ import {
 } from "../state/app"
 import { getDebuffsFromGrid } from "../utils/appUtils"
 import DebuffList from "../components/debuff/debuffList"
+import DebuffSlotsList from "../components/debuff/debuffSlotsList"
 
 const IndexPage: React.FC = () => {
-  const { specsByClass, gridValues, debuffs, selectedFaction } = useSelector(
-    appSelector,
-  )
+  const {
+    specsByClass,
+    gridValues,
+    debuffs,
+    selectedFaction,
+    debuffSlots,
+  } = useSelector(appSelector)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -86,7 +91,7 @@ const IndexPage: React.FC = () => {
               <Box
                 style={{
                   maxWidth: 180,
-                  marginRight: 64,
+                  marginRight: 48,
                   marginTop: "auto",
                   marginBottom: "auto",
                 }}
@@ -97,8 +102,31 @@ const IndexPage: React.FC = () => {
                 <RaidGrid gridValues={gridValues} numParties={40 / partySize} />
               </Box>
             </Box>
-            <Box style={{ marginLeft: 48 }}>
-              <DebuffList debuffs={debuffs} activeDebuffs={activeDebuffs} />
+            <Box style={{ marginLeft: 32, marginRight: 32 }}>
+              <DebuffList
+                debuffs={debuffs}
+                debuffSlots={debuffSlots}
+                activeDebuffs={activeDebuffs}
+              />
+            </Box>
+            <Box
+              style={{
+                marginTop: "auto",
+                marginBottom: "auto",
+                maxWidth: 180,
+                minWidth: 80,
+              }}
+            >
+              <Typography
+                align="center"
+                variant="h6"
+                style={{ marginBottom: 8 }}
+              >
+                Debuff Slots
+              </Typography>
+              <Paper>
+                <DebuffSlotsList debuffSlots={debuffSlots} />
+              </Paper>
             </Box>
           </Box>
         </Container>

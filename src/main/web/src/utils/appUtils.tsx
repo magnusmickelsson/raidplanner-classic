@@ -26,13 +26,15 @@ export function findInGrid(
 }
 
 export function getDebuffsFromGrid(
-  grid: ClassSpecType[][],
+  grid: ClassSpecType[][] | undefined[][],
   numParties: number,
 ): string[] {
   let uniqueSpecs: ClassSpecType[] = []
   let uniqueDebuffs: string[] = []
   for (let i = 0; i < numParties; i++) {
-    const specsInParty = grid[i].filter(item => item !== undefined)
+    const specsInParty = (grid[i] as ClassSpecType[]).filter(
+      (item: ClassSpecType | undefined): item is ClassSpecType => !!item,
+    )
     uniqueSpecs = [...new Set([...uniqueSpecs, ...specsInParty])]
   }
 

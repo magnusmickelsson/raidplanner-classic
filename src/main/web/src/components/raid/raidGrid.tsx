@@ -5,7 +5,7 @@ import { ClassSpecType } from "../../types/api"
 
 interface RaidGridProps {
   numParties: number
-  gridValues: ClassSpecType[][]
+  gridValues: ClassSpecType[][] | undefined[][]
 }
 
 const RaidGrid: React.FC<RaidGridProps> = ({ numParties, gridValues }) => {
@@ -18,7 +18,11 @@ const RaidGrid: React.FC<RaidGridProps> = ({ numParties, gridValues }) => {
   }
 
   return (
-    <Grid container spacing={2} style={{ height: "fit-content" }}>
+    <Grid
+      container
+      spacing={2}
+      style={{ height: "fit-content", minWidth: 128 }}
+    >
       {grids}
     </Grid>
   )

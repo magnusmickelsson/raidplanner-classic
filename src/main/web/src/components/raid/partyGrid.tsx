@@ -13,15 +13,14 @@ import { ClassSpecType } from "../../types/api"
 
 interface PartyGridTypes {
   partyNum: number
-  partyValues: ClassSpecType[]
+  partyValues: ClassSpecType[] | undefined[]
 }
 
 const PartyGrid: React.FC<PartyGridTypes> = ({ partyNum, partyValues }) => {
   const rows = []
 
   for (let j = 0; j < partySize; j++) {
-    const color =
-      colorByClass[partyValues[j] ? partyValues[j].className : undefined]
+    const color = colorByClass[partyValues[j]?.className]
     rows.push(
       <PartyRow
         key={j}
@@ -34,7 +33,7 @@ const PartyGrid: React.FC<PartyGridTypes> = ({ partyNum, partyValues }) => {
   }
 
   return (
-    <Grid item xs={6} style={{ width: 58, textAlign: "center" }}>
+    <Grid item xs={6} style={{ width: 48, textAlign: "center" }}>
       <Typography variant={"h6"}>{partyNum}</Typography>
       <TableContainer component={Paper}>
         <Table size="small" style={{ margin: 0 }}>

@@ -13,6 +13,7 @@
 There should now be a "public" folder in web root, ready to be deployed.
 
 If you want to try out the production build locally:
+
 - Run `yarn serve`
 - Open up your browser and navigate to http://localhost:9000/
 
