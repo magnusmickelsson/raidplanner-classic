@@ -16,3 +16,9 @@ Raidplanner classic is a tool to setup raid composition and assign debuff slots 
 * Spring Boot
 * Kotlin
 * Spring MVC REST API
+
+## Hint
+
+Deploy to Heroku:
+
+     heroku deploy:jar target/raidplanner-classic.jar --app raid-planner-classic
