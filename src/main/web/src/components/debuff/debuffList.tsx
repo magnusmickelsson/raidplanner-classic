@@ -6,13 +6,26 @@ import List from "@material-ui/core/List"
 interface DebuffListProps {
   debuffs: Debuff[]
   activeDebuffs: string[]
+  debuffSlots: Debuff[] | undefined[]
 }
 
-const DebuffList: React.FC<DebuffListProps> = ({ debuffs, activeDebuffs }) => {
+const DebuffList: React.FC<DebuffListProps> = ({
+  debuffs,
+  activeDebuffs,
+  debuffSlots,
+}) => {
   const debuffRows = debuffs.map((debuff, i) => (
     <DebuffItem
       key={i}
       activated={activeDebuffs.indexOf(debuff.name) !== -1}
+      slotted={
+        debuffSlots
+          ? (debuffSlots as Debuff[]).find(
+              (item: Debuff | undefined): item is Debuff =>
+                !!item && item.name === debuff.name,
+            ) !== undefined
+          : false
+      }
       debuff={debuff}
     />
   ))

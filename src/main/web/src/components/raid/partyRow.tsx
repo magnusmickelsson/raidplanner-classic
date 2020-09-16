@@ -10,7 +10,7 @@ import { ClassSpecType } from "../../types/api"
 interface PartyRowProps {
   grid: number
   row: number
-  value: ClassSpecType
+  value: ClassSpecType | undefined
   color: string
 }
 
@@ -75,7 +75,11 @@ const PartyRow: React.FC<PartyRowProps> = ({ grid, row, value, color }) => {
   const opacity = isDragging ? 0.4 : 1
 
   return (
-    <TableRow className={classes.root} selected={isOver} ref={drop}>
+    <TableRow
+      className={value ? classes.root : undefined}
+      selected={isOver}
+      ref={drop}
+    >
       <TableCell
         ref={drag}
         align="center"
@@ -84,7 +88,7 @@ const PartyRow: React.FC<PartyRowProps> = ({ grid, row, value, color }) => {
           paddingRight: 0,
           overflow: "auto",
           opacity,
-          cursor: value ? "move" : "cursor",
+          cursor: value ? "move" : "default",
         }}
       >
         {value ? value.specName : "-"}
