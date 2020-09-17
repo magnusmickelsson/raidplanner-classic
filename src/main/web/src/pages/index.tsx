@@ -23,10 +23,12 @@ import {
   selectFaction,
   getSpecsByClassForFaction,
   getSpecs,
+  getItems,
 } from "../state/app"
-import { getDebuffsFromGrid } from "../utils/appUtils"
+import { getDebuffsFromGrid, getDebuffsFromItems } from "../utils/appUtils"
 import DebuffList from "../components/debuff/debuffList"
 import DebuffSlotsList from "../components/debuff/debuffSlotsList"
+import ItemList from "../components/item/itemList"
 
 const IndexPage: React.FC = () => {
   const {
@@ -35,6 +37,8 @@ const IndexPage: React.FC = () => {
     debuffs,
     selectedFaction,
     debuffSlots,
+    items,
+    activeItems,
   } = useSelector(appSelector)
   const dispatch = useDispatch()
 
@@ -42,6 +46,7 @@ const IndexPage: React.FC = () => {
     dispatch(getSpecs())
     dispatch(getSpecsByClassForFaction(selectedFaction))
     dispatch(getDebuffs())
+    dispatch(getItems())
   }, [])
 
   const specsLists = Object.keys(specsByClass).map((wowClass, i) => {
@@ -53,8 +58,9 @@ const IndexPage: React.FC = () => {
   })
 
   const activeDebuffs = getDebuffsFromGrid(gridValues, 40 / partySize)
+  const debuffsFromItems = getDebuffsFromItems(activeItems)
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFactionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = (event.target as HTMLInputElement).value
     dispatch(selectFaction(value))
     dispatch(getSpecsByClassForFaction(value))
@@ -72,7 +78,7 @@ const IndexPage: React.FC = () => {
               aria-label="faction"
               name="faction1"
               value={selectedFaction}
-              onChange={handleChange}
+              onChange={handleFactionChange}
             >
               <FormControlLabel
                 value={factions.ALLIANCE.toLowerCase()}
@@ -96,6 +102,18 @@ const IndexPage: React.FC = () => {
                   marginBottom: "auto",
                 }}
               >
+                <Paper>
+                  <ItemList items={items} activeItems={activeItems} />
+                </Paper>
+              </Box>
+              <Box
+                style={{
+                  maxWidth: 180,
+                  marginRight: 48,
+                  marginTop: "auto",
+                  marginBottom: "auto",
+                }}
+              >
                 {specsLists}
               </Box>
               <Box style={{ marginTop: "auto", marginBottom: "auto" }}>
@@ -105,6 +123,7 @@ const IndexPage: React.FC = () => {
             <Box style={{ marginLeft: 32, marginRight: 32 }}>
               <DebuffList
                 debuffs={debuffs}
+                itemDebuffs={debuffsFromItems}
                 debuffSlots={debuffSlots}
                 activeDebuffs={activeDebuffs}
               />

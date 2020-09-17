@@ -1,4 +1,4 @@
-import { ClassSpecType, Debuff } from "../../types/api"
+import { ClassSpec, Debuff, DebuffItem } from "../../types/api"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { RootState, Thunk, Dispatch } from "../store"
 import {
@@ -6,19 +6,22 @@ import {
   fetchDebuffs,
   fetchSpecsByFaction,
   fetchSpecsByClassForFaction,
+  fetchItems,
 } from "../../actions/api"
 import { populateGrid } from "../../utils/appUtils"
 import { partySize, factions, numDebuffSlots } from "../../constants/wow"
 import { DebuffSlotAction, GridAction } from "../../types/app"
 
 interface AppState {
-  specs: ClassSpecType[]
-  specsByClass: Record<string, ClassSpecType[]>
-  gridValues: ClassSpecType[][] | undefined[][]
+  specs: ClassSpec[]
+  specsByClass: Record<string, ClassSpec[]>
+  gridValues: ClassSpec[][] | undefined[][]
   debuffs: Debuff[]
   activeDebuffs: string[]
   selectedFaction: string
   debuffSlots: Debuff[] | undefined[]
+  items: DebuffItem[]
+  activeItems: DebuffItem[]
 }
 
 const initialState: AppState = {
@@ -29,6 +32,8 @@ const initialState: AppState = {
   activeDebuffs: [],
   selectedFaction: factions.ALLIANCE.toLowerCase(),
   debuffSlots: new Array(numDebuffSlots).fill(undefined),
+  items: [],
+  activeItems: [],
 }
 
 // Slice
@@ -36,12 +41,12 @@ const appSlice = createSlice({
   name: "app",
   initialState,
   reducers: {
-    _getSpecs: (state, action: PayloadAction<ClassSpecType[]>) => {
+    _getSpecs: (state, action: PayloadAction<ClassSpec[]>) => {
       state.specs = action.payload
     },
     _getSpecsByClassForFaction: (
       state,
-      action: PayloadAction<Record<string, ClassSpecType[]>>,
+      action: PayloadAction<Record<string, ClassSpec[]>>,
     ) => {
       state.specsByClass = action.payload
     },
@@ -76,6 +81,20 @@ const appSlice = createSlice({
       debuffSlots[i] = value
       state.debuffSlots = debuffSlots
     },
+    _getItems: (state, action: PayloadAction<DebuffItem[]>) => {
+      state.items = action.payload
+    },
+    _toggleItem: (state, action: PayloadAction<DebuffItem>) => {
+      const existingIndex = state.activeItems.findIndex(
+        item => item.name === action.payload.name,
+      )
+
+      if (existingIndex !== -1) {
+        state.activeItems.splice(existingIndex, 1)
+      } else {
+        state.activeItems.push(action.payload)
+      }
+    },
   },
 })
 
@@ -93,6 +112,8 @@ const {
   _selectFaction,
   _getSpecsByClassForFaction,
   _setDebuffSlot,
+  _getItems,
+  _toggleItem,
 } = appSlice.actions
 
 // Thunks
@@ -140,4 +161,12 @@ export const setDebuffSlot = (debuffSlotAction: DebuffSlotAction): Thunk => (
   dispatch: Dispatch,
 ) => {
   dispatch(_setDebuffSlot(debuffSlotAction))
+}
+
+export const getItems = (): Thunk => (dispatch: Dispatch) => {
+  fetchItems().then(result => dispatch(_getItems(result)))
+}
+
+export const toggleItem = (item: DebuffItem): Thunk => (dispatch: Dispatch) => {
+  dispatch(_toggleItem(item))
 }
