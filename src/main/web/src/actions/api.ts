@@ -25,3 +25,9 @@ export async function fetchDebuffs(): Promise<any> {
   const resultData = await response.json()
   return Promise.resolve(resultData)
 }
+
+export async function fetchItems(): Promise<any> {
+  const response = await fetch(`${API_URL}/item`)
+  const resultData = await response.json()
+  return Promise.resolve(resultData)
+}

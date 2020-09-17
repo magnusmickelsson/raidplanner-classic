@@ -1,4 +1,4 @@
-import { ClassSpecType, Debuff } from "./api"
+import { ClassSpec, Debuff } from "./api"
 
 export const ItemTypes = {
   SPEC: "spec",
@@ -7,7 +7,7 @@ export const ItemTypes = {
 
 export interface SpecDragItemType {
   type: string
-  value: ClassSpecType
+  value: ClassSpec
   prevGridValue: GridValue
   color: string
 }
@@ -19,13 +19,13 @@ export interface DebuffDragItemType {
 }
 
 export interface SpecsByClasses {
-  [key: string]: ClassSpecType[]
+  [key: string]: ClassSpec[]
 }
 
 export interface GridValue {
   x: number
   y: number
-  value: ClassSpecType | undefined
+  value: ClassSpec | undefined
 }
 
 export interface GridAction {

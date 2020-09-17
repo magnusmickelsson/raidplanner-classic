@@ -5,12 +5,12 @@ import { ItemTypes, SpecDragItemType } from "../../types/app"
 import { useDispatch } from "react-redux"
 import { makeStyles } from "@material-ui/core/styles"
 import { setGridValue } from "../../state/app"
-import { ClassSpecType } from "../../types/api"
+import { ClassSpec } from "../../types/api"
 
 interface PartyRowProps {
   grid: number
   row: number
-  value: ClassSpecType | undefined
+  value: ClassSpec | undefined
   color: string
 }
 

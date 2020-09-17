@@ -9,11 +9,11 @@ import {
 } from "@material-ui/core"
 import { partySize, colorByClass } from "../../constants/wow"
 import PartyRow from "./partyRow"
-import { ClassSpecType } from "../../types/api"
+import { ClassSpec } from "../../types/api"
 
 interface PartyGridTypes {
   partyNum: number
-  partyValues: ClassSpecType[] | undefined[]
+  partyValues: ClassSpec[] | undefined[]
 }
 
 const PartyGrid: React.FC<PartyGridTypes> = ({ partyNum, partyValues }) => {

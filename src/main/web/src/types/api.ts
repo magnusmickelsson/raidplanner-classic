@@ -4,8 +4,13 @@ export interface Debuff {
   overwrites: boolean
 }
 
-export interface ClassSpecType {
+export interface ClassSpec {
   specName: string
   className: any
   canApplyDebuff: Debuff[]
+}
+
+export interface DebuffItem {
+  name: string
+  effect: Debuff[]
 }
