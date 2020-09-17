@@ -152,21 +152,21 @@
 						</configuration>
 					</execution>
 					<execution>
+						<id>yarn install</id>
+						<goals>
+							<goal>yarn</goal>
+						</goals>
+						<configuration>
+							<workingDirectory>src/main/web</workingDirectory>
+						</configuration>
+					</execution>
+					<execution>
 						<id>yarn clean</id>
 						<goals>
 							<goal>yarn</goal>
 						</goals>
 						<configuration>
 							<arguments>clean</arguments>
-							<workingDirectory>src/main/web</workingDirectory>
-						</configuration>
-					</execution>
-					<execution>
-						<id>yarn install</id>
-						<goals>
-							<goal>yarn</goal>
-						</goals>
-						<configuration>
 							<workingDirectory>src/main/web</workingDirectory>
 						</configuration>
 					</execution>
