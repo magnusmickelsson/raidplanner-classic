@@ -1,12 +1,12 @@
 import React from "react"
-import { ClassSpecType } from "../../types/api"
+import { ClassSpec } from "../../types/api"
 import SpecItem from "./specItem"
 import List from "@material-ui/core/List"
 import { colorByClass } from "../../constants/wow"
 
 interface SpecsListProps {
   wowClass: string
-  specs: ClassSpecType[]
+  specs: ClassSpec[]
 }
 
 const SpecsList: React.FC<SpecsListProps> = ({ wowClass, specs }) => {

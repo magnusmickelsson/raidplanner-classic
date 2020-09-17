@@ -1,5 +1,5 @@
 import React from "react"
-import { ClassSpecType } from "../../types/api"
+import { ClassSpec } from "../../types/api"
 import { useDrag } from "react-dnd"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
@@ -8,7 +8,7 @@ import { makeStyles } from "@material-ui/core/styles"
 
 interface SpecProps {
   color: string
-  spec: ClassSpecType
+  spec: ClassSpec
 }
 
 const useStyles = makeStyles({
