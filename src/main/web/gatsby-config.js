@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: `Raid Planner Classic`,
-    description: `Raid Planner for Classic World of Warcraft.`,
+    description: `Raid Planner for World of Warcraft Classic.`,
     author: `Jesper Falkenby & Magnus Mickelsson`,
   },
   plugins: [

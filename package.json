@@ -1,5 +1,5 @@
 {
   "scripts": {
-    "postinstall": "cd src/main/web && yarn install"
+    "heroku-prebuild": "cd src/main/web && yarn install && yarn run build"
   }
 }
