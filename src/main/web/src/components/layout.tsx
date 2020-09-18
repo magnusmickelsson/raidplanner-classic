@@ -37,7 +37,7 @@ const Layout: React.FC = ({ children }) => {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h4" style={{ flexGrow: 1 }}>
-            {data.title}
+            {data.site.siteMetadata.title}
           </Typography>
           <Button color="inherit">About</Button>
         </Toolbar>
