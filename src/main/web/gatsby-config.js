@@ -1,8 +1,8 @@
 module.exports = {
   siteMetadata: {
     title: `Raid Planner Classic`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
+    description: `Raid Planner for Classic World of Warcraft.`,
+    author: `Jesper Falkenby & Magnus Mickelsson`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
