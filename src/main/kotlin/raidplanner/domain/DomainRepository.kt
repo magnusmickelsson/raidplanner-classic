@@ -152,6 +152,7 @@ class DomainRepository {
                 )),
                 ClassSpec("Winter's Chill Frost", WowClassName.MAGE, listOf(wintersChill)),
                 ClassSpec("Frost", WowClassName.MAGE, emptyList()),
+                ClassSpec("Arcane", WowClassName.MAGE, emptyList()),
                 ClassSpec("Holy", WowClassName.PALADIN, listOf(
                         Debuff("Seal of Wisdom", DebuffEffectType()),
                         Debuff("Seal of Light", DebuffEffectType())
@@ -167,8 +168,12 @@ class DomainRepository {
                         )
                 )
                 ),
-                ClassSpec("Dagger", WowClassName.ROGUE, rogueDebuffs()),
-                ClassSpec("Sword", WowClassName.ROGUE, rogueDebuffs())
+                ClassSpec("DPS Hemorrhage", WowClassName.ROGUE, rogueDebuffs().plus(
+                        Debuff("Hemorrhage", DebuffEffectType(damageModifiers = listOf(
+                                DamageModifier(DamageType.PHYSICAL, DamageIncrease(7.0, Unit.NUMBER))
+                        )))
+                )),
+                ClassSpec("DPS", WowClassName.ROGUE, rogueDebuffs())
         )
     }
 
@@ -290,9 +295,6 @@ fun rogueDebuffs(): List<Debuff> {
     return listOf(
             Debuff("Expose Armor", DebuffEffectType(statModifiers = listOf(
                     StatModifier(StatType.ARMOR, -1700, 1)
-            ))),
-            Debuff("Hemorrhage", DebuffEffectType(damageModifiers = listOf(
-                    DamageModifier(DamageType.PHYSICAL, DamageIncrease(7.0, Unit.NUMBER))
             )))
     )
 }
