@@ -63,12 +63,12 @@ class DomainRepository {
         ))
 
         val thunderfury = DebuffItem("Thunderfury ", listOf(
-                Debuff("Thunderfury slow", DebuffEffectType(
+                Debuff("Thunderfury (1)", DebuffEffectType(
                         listOf(
                                 StatModifier(StatType.ATTACK_SPEED, -20)
                         )
                 )),
-                Debuff("Thunderfury Nature Resistance", DebuffEffectType(
+                Debuff("Thunderfury (2)", DebuffEffectType(
                         listOf(
                                 StatModifier(StatType.NATURE_RESIST, -26)
                         )
@@ -233,6 +233,7 @@ val mindFlay = dot("Mind Flay")
 val swp = dot("Shadow Word: Pain")
 
 fun shadowPriestDebuffs(): List<Debuff> = listOf(
+        Debuff("Vampiric Embrace"),
         shadowWeaving,
         mindFlay,
         swp)
