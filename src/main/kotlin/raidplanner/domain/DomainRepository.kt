@@ -3,7 +3,6 @@ package raidplanner.domain
 import org.springframework.stereotype.Repository
 
 // TODO: Refactor debuff setup into its own repository?
-// TODO: Debuff handling needs to be aware that some debuffs take extra spot and some add to the same one
 @Repository
 class DomainRepository {
     private val items: List<DebuffItem>
@@ -35,13 +34,13 @@ class DomainRepository {
     companion object {
         // TODO: Refactor into item repository?
         val arcaniteDragonling = DebuffItem("Arcanite Dragonling", listOf(
-                Debuff("Arcanite Dragonling Flame Buffet", DebuffEffectType(emptyList(), listOf(
+                Debuff("Arcanite Dragonling", DebuffEffectType(emptyList(), listOf(
                         DamageModifier(DamageType.FIRE, DamageIncrease(40.0, Unit.NUMBER), stackTimes = 3) // TODO: Verify the actual number at level 60
                 )))
         ))
 
         val annihilator = DebuffItem("Annihilator", listOf(
-                Debuff("Annihilator Armor reduction", DebuffEffectType(
+                Debuff("Annihilator", DebuffEffectType(
                         listOf(
                                 StatModifier(StatType.ARMOR, -200, stackTimes = 3)
                         ),
@@ -63,17 +62,23 @@ class DomainRepository {
         ))
 
         val thunderfury = DebuffItem("Thunderfury ", listOf(
-                Debuff("Thunderfury slow", DebuffEffectType(
+                Debuff("Thunderfury (1)", DebuffEffectType(
                         listOf(
                                 StatModifier(StatType.ATTACK_SPEED, -20)
                         )
                 )),
-                Debuff("Thunderfury Nature Resistance", DebuffEffectType(
+                Debuff("Thunderfury (2)", DebuffEffectType(
                         listOf(
                                 StatModifier(StatType.NATURE_RESIST, -26)
                         )
                 ))
 
+        ))
+
+        val exposeWeaknessHunterT2 = DebuffItem("8pc T2 hunter", listOf(
+                Debuff("Expose Weakness (T2)", DebuffEffectType(damageModifiers = listOf(
+                        DamageModifier(DamageType.RANGED, DamageIncrease(450.0, Unit.NUMBER))
+                )))
         ))
 
         val hunterMark = Debuff("Hunter's Mark", DebuffEffectType(
@@ -93,20 +98,25 @@ class DomainRepository {
                 nightfall,
                 arcaniteDragonling,
                 giftOfArthas,
-                thunderfury
+                thunderfury,
+                exposeWeaknessHunterT2
         )
 
         specs = listOf(
-                ClassSpec("SM/Ruin", WowClassName.WARLOCK, warlockDebuffs()),
-                ClassSpec("MD/Ruin", WowClassName.WARLOCK, warlockDebuffs()),
-                ClassSpec("DS/Ruin", WowClassName.WARLOCK, warlockDebuffs()),
-                ClassSpec("Mortal Strike Arms", WowClassName.WARRIOR, listOf(
+                ClassSpec("SM", WowClassName.WARLOCK, warlockDebuffs()),
+                ClassSpec("MD", WowClassName.WARLOCK, warlockDebuffs()),
+                ClassSpec("DS", WowClassName.WARLOCK, warlockDebuffs()),
+                ClassSpec("Arms (Mortal Strike)", WowClassName.WARRIOR, listOf(
                         Debuff("Mortal Strike", DebuffEffectType()) // TODO: How setup healing reduction effect?
                 ).plus(warriorDebuffs())
                 ),
                 ClassSpec("DPS", WowClassName.WARRIOR, warriorDebuffs()),
                 ClassSpec("Tank", WowClassName.WARRIOR, warriorDebuffs()),
-                ClassSpec("Disc Shadow Weaving", WowClassName.PRIEST, shadowPriestDebuffs()),
+                ClassSpec("Disc (Shadow Weave)", WowClassName.PRIEST, listOf(
+                        shadowWeaving,
+                        mindFlay,
+                        swp
+                )),
                 ClassSpec("Shadow", WowClassName.PRIEST, shadowPriestDebuffs()),
                 ClassSpec("Holy", WowClassName.PRIEST, emptyList()),
                 ClassSpec("Disc", WowClassName.PRIEST, emptyList()),
@@ -125,24 +135,25 @@ class DomainRepository {
                                 StatModifier(StatType.ATTACK_POWER, -100)
                         )
                         ), overwrites = true),
-                        Debuff("Expose Weakness (T2)", DebuffEffectType(damageModifiers = listOf(
-                                DamageModifier(DamageType.RANGED, DamageIncrease(450.0, Unit.NUMBER))
-                        )))
+                        dot("Serpent Sting")
                 )),
                 ClassSpec("Feral DPS", WowClassName.DRUID, listOf(
-                        faerieFire
+                        faerieFire,
+                        dot("Rip")
                 )),
                 ClassSpec("Feral Tank", WowClassName.DRUID, listOf(
                         faerieFire
                 )),
                 ClassSpec("Resto", WowClassName.DRUID, listOf(
                         faerieFire,
+                        dot("Moonfire"),
                         Debuff("Insect Swarm", DebuffEffectType(statModifiers = listOf(
                                 StatModifier(StatType.HIT, -2)
                         )))
                 )),
                 ClassSpec("Moonkin", WowClassName.DRUID, listOf(
                         faerieFire,
+                        dot("Moonfire"),
                         Debuff("Insect Swarm", DebuffEffectType(statModifiers = listOf(
                                 StatModifier(StatType.HIT, -2)
                         )))
@@ -150,8 +161,9 @@ class DomainRepository {
                 ClassSpec("Fire", WowClassName.MAGE, listOf(
                         improvedScorch, ignite
                 )),
-                ClassSpec("Winter's Chill Frost", WowClassName.MAGE, listOf(wintersChill)),
+                ClassSpec("Frost (WC)", WowClassName.MAGE, listOf(wintersChill)),
                 ClassSpec("Frost", WowClassName.MAGE, emptyList()),
+                ClassSpec("Arcane", WowClassName.MAGE, emptyList()),
                 ClassSpec("Holy", WowClassName.PALADIN, listOf(
                         Debuff("Seal of Wisdom", DebuffEffectType()),
                         Debuff("Seal of Light", DebuffEffectType())
@@ -167,8 +179,12 @@ class DomainRepository {
                         )
                 )
                 ),
-                ClassSpec("Dagger", WowClassName.ROGUE, rogueDebuffs()),
-                ClassSpec("Sword", WowClassName.ROGUE, rogueDebuffs())
+                ClassSpec("DPS (Hemo)", WowClassName.ROGUE, rogueDebuffs().plus(
+                        Debuff("Hemorrhage", DebuffEffectType(damageModifiers = listOf(
+                                DamageModifier(DamageType.PHYSICAL, DamageIncrease(7.0, Unit.NUMBER))
+                        )))
+                )),
+                ClassSpec("DPS", WowClassName.ROGUE, rogueDebuffs())
         )
     }
 
@@ -228,6 +244,7 @@ val mindFlay = dot("Mind Flay")
 val swp = dot("Shadow Word: Pain")
 
 fun shadowPriestDebuffs(): List<Debuff> = listOf(
+        Debuff("Vampiric Embrace"),
         shadowWeaving,
         mindFlay,
         swp)
@@ -288,11 +305,9 @@ fun vulnerability(spellResistanceReduction: Int, statTypes: List<StatType>): Lis
 
 fun rogueDebuffs(): List<Debuff> {
     return listOf(
+            dot("Rupture"),
             Debuff("Expose Armor", DebuffEffectType(statModifiers = listOf(
                     StatModifier(StatType.ARMOR, -1700, 1)
-            ))),
-            Debuff("Hemorrhage", DebuffEffectType(damageModifiers = listOf(
-                    DamageModifier(DamageType.PHYSICAL, DamageIncrease(7.0, Unit.NUMBER))
             )))
     )
 }
