@@ -7,6 +7,7 @@ import {
   fetchSpecsByFaction,
   fetchSpecsByClassForFaction,
   fetchItems,
+  postRaid,
 } from "../../actions/api"
 import { populateGrid } from "../../utils/appUtils"
 import { partySize, factions, numDebuffSlots } from "../../constants/wow"
@@ -22,6 +23,7 @@ interface AppState {
   debuffSlots: Debuff[] | undefined[]
   items: DebuffItem[]
   activeItems: DebuffItem[]
+  savedRaidId: string | undefined
 }
 
 const initialState: AppState = {
@@ -34,6 +36,7 @@ const initialState: AppState = {
   debuffSlots: new Array(numDebuffSlots).fill(undefined),
   items: [],
   activeItems: [],
+  savedRaidId: undefined,
 }
 
 // Slice
@@ -95,6 +98,9 @@ const appSlice = createSlice({
         state.activeItems.push(action.payload)
       }
     },
+    _setSavedRaidId: (state, action: PayloadAction<string>) => {
+      state.savedRaidId = action.payload
+    },
   },
 })
 
@@ -114,6 +120,7 @@ const {
   _setDebuffSlot,
   _getItems,
   _toggleItem,
+  _setSavedRaidId,
 } = appSlice.actions
 
 // Thunks
@@ -169,4 +176,10 @@ export const getItems = (): Thunk => (dispatch: Dispatch) => {
 
 export const toggleItem = (item: DebuffItem): Thunk => (dispatch: Dispatch) => {
   dispatch(_toggleItem(item))
+}
+
+export const saveRaid = (gridValues: ClassSpec[][] | undefined[][]): Thunk => (
+  dispatch: Dispatch,
+) => {
+  postRaid(gridValues).then(result => dispatch(_setSavedRaidId(result.data))) // TODO: Set URL to returned ID?
 }

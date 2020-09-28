@@ -22,8 +22,14 @@ const useStyles = makeStyles({
 const SpecItem: React.FC<SpecProps> = ({ color, spec }) => {
   const classes = useStyles()
 
+  const val: ClassSpec = {
+    className: spec.className,
+    specName: spec.specName,
+    canApplyDebuff: [], // We don't want to send over unnecessary data, so just use an empty array
+  }
+
   const [{ isDragging }, drag] = useDrag({
-    item: { type: ItemTypes.SPEC, value: spec, color: color },
+    item: { type: ItemTypes.SPEC, value: val, color: color },
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),
     }),

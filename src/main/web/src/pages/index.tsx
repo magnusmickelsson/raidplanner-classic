@@ -13,6 +13,7 @@ import {
   FormControlLabel,
   Radio,
   Typography,
+  Button,
 } from "@material-ui/core"
 import { useSelector, useDispatch } from "react-redux"
 import RaidGrid from "../components/raid/raidGrid"
@@ -24,14 +25,17 @@ import {
   getSpecsByClassForFaction,
   getSpecs,
   getItems,
+  saveRaid,
 } from "../state/app"
 import { getDebuffsFromGrid, getDebuffsFromItems } from "../utils/appUtils"
 import DebuffList from "../components/debuff/debuffList"
 import DebuffSlotsList from "../components/debuff/debuffSlotsList"
 import ItemList from "../components/item/itemList"
+import { ClassSpec } from "../types/api"
 
 const IndexPage: React.FC = () => {
   const {
+    specs,
     specsByClass,
     gridValues,
     debuffs,
@@ -39,6 +43,7 @@ const IndexPage: React.FC = () => {
     debuffSlots,
     items,
     activeItems,
+    savedRaidId,
   } = useSelector(appSelector)
   const dispatch = useDispatch()
 
@@ -57,13 +62,31 @@ const IndexPage: React.FC = () => {
     )
   })
 
-  const activeDebuffs = getDebuffsFromGrid(gridValues, 40 / partySize)
+  const activeDebuffs = getDebuffsFromGrid(gridValues, specs, 40 / partySize)
   const debuffsFromItems = getDebuffsFromItems(activeItems)
+
+  let gridHasValues = false
+
+  for (let i = 0; i < 40 / partySize; i++) {
+    const hasValue =
+      (gridValues[i] as ClassSpec[]).find(
+        (item: ClassSpec | undefined) => item !== undefined,
+      ) !== undefined
+
+    if (hasValue) {
+      gridHasValues = true
+      break
+    }
+  }
 
   const handleFactionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = (event.target as HTMLInputElement).value
     dispatch(selectFaction(value))
     dispatch(getSpecsByClassForFaction(value))
+  }
+
+  const handleSaveRaidClick = () => {
+    dispatch(saveRaid(gridValues))
   }
 
   return (
@@ -72,26 +95,54 @@ const IndexPage: React.FC = () => {
         <SEO title="Home" description="" lang="en" meta={[]} />
         <Container>
           <Typography variant="h4">Debuff Planner</Typography>
-          <FormControl component="fieldset">
-            <RadioGroup
-              row
-              aria-label="faction"
-              name="faction1"
-              value={selectedFaction}
-              onChange={handleFactionChange}
+          <Box display="flex" flexDirection="column">
+            <FormControl component="fieldset">
+              <RadioGroup
+                row
+                aria-label="faction"
+                name="faction1"
+                value={selectedFaction}
+                onChange={handleFactionChange}
+              >
+                <FormControlLabel
+                  value={factions.ALLIANCE.toLowerCase()}
+                  control={<Radio />}
+                  label={factions.ALLIANCE}
+                />
+                <FormControlLabel
+                  value={factions.HORDE.toLowerCase()}
+                  control={<Radio />}
+                  label={factions.HORDE}
+                />
+              </RadioGroup>
+            </FormControl>
+            <Button
+              disabled={!gridHasValues}
+              style={{
+                width: 32,
+                marginLeft: "auto",
+                marginRight: "auto",
+                marginTop: 8,
+              }}
+              variant={"contained"}
+              color={"primary"}
+              onClick={handleSaveRaidClick}
             >
-              <FormControlLabel
-                value={factions.ALLIANCE.toLowerCase()}
-                control={<Radio />}
-                label={factions.ALLIANCE}
-              />
-              <FormControlLabel
-                value={factions.HORDE.toLowerCase()}
-                control={<Radio />}
-                label={factions.HORDE}
-              />
-            </RadioGroup>
-          </FormControl>
+              Save
+            </Button>
+            {savedRaidId && (
+              <Typography
+                style={{
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  marginTop: 8,
+                }}
+                variant={"subtitle2"}
+              >
+                {savedRaidId}
+              </Typography>
+            )}
+          </Box>
           <Box display="flex" flexDirection="row">
             <Box display="flex" flexDirection="row">
               <Box

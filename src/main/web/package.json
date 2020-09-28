@@ -1,9 +1,9 @@
 {
-  "name": "gatsby-starter-default",
+  "name": "raidplanner-classic",
   "private": true,
-  "description": "A simple starter to get up and developing quickly with Gatsby",
-  "version": "0.1.0",
-  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+  "description": "Web app for World of Warcraft Classic Raid Planner",
+  "version": "0.9.0",
+  "author": "Jesper Falkenby <jesper.hansson.f@gmail.com>",
   "dependencies": {
     "@emotion/core": "^10.0.35",
     "@emotion/styled": "^10.0.27",
@@ -45,8 +45,8 @@
     "@types/react-redux": "^7.1.9",
     "@typescript-eslint/eslint-plugin": "^4.2.0",
     "@typescript-eslint/parser": "^4.2.0",
-    "eslint-config-prettier": "^6.12.0",
     "eslint": "^7.10.0",
+    "eslint-config-prettier": "^6.12.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.2",
     "husky": "^4.2.5",
@@ -54,7 +54,12 @@
     "prettier": "2.1.2"
   },
   "keywords": [
-    "gatsby"
+    "gatsby",
+    "world of warcraft",
+    "wow",
+    "raid",
+    "planner",
+    "raid planner"
   ],
   "license": "0BSD",
   "scripts": {
@@ -70,10 +75,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gatsbyjs/gatsby-starter-default"
+    "url": "https://github.com/magnusmickelsson/raidplanner-classic"
   },
   "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
+    "url": "https://github.com/magnusmickelsson/raidplanner-classic/issues"
   },
   "husky": {
     "hooks": {

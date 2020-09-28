@@ -27,6 +27,7 @@ export function findInGrid(
 
 export function getDebuffsFromGrid(
   grid: ClassSpec[][] | undefined[][],
+  specs: ClassSpec[],
   numParties: number,
 ): string[] {
   let uniqueSpecs: ClassSpec[] = []
@@ -39,8 +40,12 @@ export function getDebuffsFromGrid(
   }
 
   uniqueSpecs.forEach(item => {
-    const specDebuffs = item.canApplyDebuff.map(item => item.name)
-    uniqueDebuffs = [...new Set([...uniqueDebuffs, ...specDebuffs])]
+    const fullSpec = specs.find(spec => spec.specName === item.specName)
+
+    if (fullSpec !== undefined) {
+      const specDebuffs = fullSpec.canApplyDebuff.map(item => item.name)
+      uniqueDebuffs = [...new Set([...uniqueDebuffs, ...specDebuffs])]
+    }
   })
 
   return uniqueDebuffs

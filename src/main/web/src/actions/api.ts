@@ -1,4 +1,8 @@
 import { API_URL } from "../constants/api"
+import axios, { AxiosResponse } from "axios"
+import { ClassSpec } from "../types/api"
+
+// TODO: Fix type checks for Promises in this file, aka do not use "any"
 
 export async function fetchSpecs(): Promise<any> {
   const response = await fetch(`${API_URL}/spec`)
@@ -30,4 +34,11 @@ export async function fetchItems(): Promise<any> {
   const response = await fetch(`${API_URL}/item`)
   const resultData = await response.json()
   return Promise.resolve(resultData)
+}
+
+export async function postRaid(
+  gridValues: ClassSpec[][] | undefined[][],
+): Promise<AxiosResponse> {
+  const response = await axios.post(`${API_URL}/raid`, gridValues)
+  return Promise.resolve(response)
 }
