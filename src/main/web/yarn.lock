@@ -7248,19 +7248,18 @@ gatsby-source-filesystem@^2.3.30:
     valid-url "^1.0.9"
     xstate "^4.11.0"
 
-gatsby-source-graphql@^2.7.2:
-  version "2.7.3"
-  resolved "https://registry.yarnpkg.com/gatsby-source-graphql/-/gatsby-source-graphql-2.7.3.tgz#185f93a19520a09dac4aeb93150e3a766940ef72"
-  integrity sha512-UVtRmxPvwDOv2XXl8sv6yNcW6WAbqONa9wZRCnlk+ELXzsfJgGp+xfyhAjzUASJRk3hgKoD21prW1I6eVKXgmw==
+gatsby-source-graphql@^2.7.5:
+  version "2.7.5"
+  resolved "https://registry.yarnpkg.com/gatsby-source-graphql/-/gatsby-source-graphql-2.7.5.tgz#94c20376aec09feb29b2783635b33504da9e059b"
+  integrity sha512-BZ7lwHVutA9/+sTGoXf8KN9kciJATxHLANq6M9NgUz4K/KsVAbJ6mX7XqVO1khHSOAhlWNdRDf3iM9uWKgKR+A==
   dependencies:
-    "@babel/runtime" "^7.10.3"
+    "@babel/runtime" "^7.11.2"
     "@graphql-tools/links" "^6.0.9"
     "@graphql-tools/utils" "^6.0.9"
     "@graphql-tools/wrap" "^6.0.9"
     apollo-link "1.2.14"
     apollo-link-http "^1.5.17"
     dataloader "^2.0.0"
-    graphql "^14.6.0"
     invariant "^2.2.4"
     node-fetch "^1.7.3"
     uuid "3.4.0"
