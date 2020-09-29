@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import Container from "../components/container"
@@ -14,6 +14,7 @@ import {
   Radio,
   Typography,
   Button,
+  Snackbar,
 } from "@material-ui/core"
 import { useSelector, useDispatch } from "react-redux"
 import RaidGrid from "../components/raid/raidGrid"
@@ -26,14 +27,32 @@ import {
   getSpecs,
   getItems,
   saveRaid,
+  editRaid,
+  getRaid,
+  _setLoadRaidError,
+  _setLoadRaidDialogOpen,
+  _setEditRaidSnackbarOpen,
+  _setEditRaidError,
+  _setCreateRaidError,
+  _setCreateRaidSnackbarOpen,
 } from "../state/app"
-import { getDebuffsFromGrid, getDebuffsFromItems } from "../utils/appUtils"
+import {
+  getDebuffsFromGrid,
+  getDebuffsFromItems,
+  getRaidIdFromUrlQuery,
+} from "../utils/appUtils"
 import DebuffList from "../components/debuff/debuffList"
 import DebuffSlotsList from "../components/debuff/debuffSlotsList"
 import ItemList from "../components/item/itemList"
 import { ClassSpec } from "../types/api"
+import { useLocation } from "@reach/router"
+import { navigate } from "gatsby"
+import LoadRaidDialog from "../components/loadRaidDialog"
+import { Alert } from "@material-ui/lab"
 
 const IndexPage: React.FC = () => {
+  const [raidId, setRaidId] = useState<string | null>(null)
+
   const {
     specs,
     specsByClass,
@@ -44,15 +63,39 @@ const IndexPage: React.FC = () => {
     items,
     activeItems,
     savedRaidId,
+    loadRaidError,
+    loadRaidDialogOpen,
+    editRaidSnackbarOpen,
+    editRaidError,
+    createRaidSnackbarOpen,
+    createRaidError,
   } = useSelector(appSelector)
   const dispatch = useDispatch()
+
+  const location = useLocation()
 
   useEffect(() => {
     dispatch(getSpecs())
     dispatch(getSpecsByClassForFaction(selectedFaction))
     dispatch(getDebuffs())
     dispatch(getItems())
+
+    const raidId = getRaidIdFromUrlQuery(location.search)
+
+    if (raidId !== null) dispatch(getRaid(raidId))
   }, [])
+
+  useEffect(() => {
+    if (
+      savedRaidId !== undefined &&
+      savedRaidId !== getRaidIdFromUrlQuery(location.search)
+    )
+      navigate(`?raidId=${savedRaidId}`)
+  }, [savedRaidId])
+
+  useEffect(() => {
+    setRaidId(getRaidIdFromUrlQuery(location.search))
+  }, [location.search])
 
   const specsLists = Object.keys(specsByClass).map((wowClass, i) => {
     return (
@@ -89,13 +132,42 @@ const IndexPage: React.FC = () => {
     dispatch(saveRaid(gridValues))
   }
 
+  const handleEditRaidClick = (raidId: string) => {
+    dispatch(editRaid(gridValues, raidId))
+  }
+
+  const handleLoadDialogClose = () => {
+    dispatch(_setLoadRaidDialogOpen(false))
+    dispatch(_setLoadRaidError(undefined))
+  }
+
+  const handleEditSnackbarClose = () => {
+    dispatch(_setEditRaidSnackbarOpen(false))
+  }
+
+  const handleEditErrorSnackbarClose = () => {
+    dispatch(_setEditRaidError(undefined))
+  }
+
+  const handleCreateSnackbarClose = () => {
+    dispatch(_setCreateRaidSnackbarOpen(false))
+  }
+
+  const handleCreateErrorSnackbarClose = () => {
+    dispatch(_setCreateRaidError(undefined))
+  }
+
   return (
     <DndProvider backend={HTML5Backend}>
       <Layout>
         <SEO title="Home" description="" lang="en" meta={[]} />
         <Container>
           <Typography variant="h4">Debuff Planner</Typography>
-          <Box display="flex" flexDirection="column">
+          <Box
+            style={{ alignItems: "center" }}
+            display="flex"
+            flexDirection="column"
+          >
             <FormControl component="fieldset">
               <RadioGroup
                 row
@@ -116,32 +188,45 @@ const IndexPage: React.FC = () => {
                 />
               </RadioGroup>
             </FormControl>
-            <Button
-              disabled={!gridHasValues}
-              style={{
-                width: 32,
-                marginLeft: "auto",
-                marginRight: "auto",
-                marginTop: 8,
-              }}
-              variant={"contained"}
-              color={"primary"}
-              onClick={handleSaveRaidClick}
-            >
-              Save
-            </Button>
-            {savedRaidId && (
-              <Typography
+            <Box>
+              <Button
+                disabled={!gridHasValues}
                 style={{
-                  marginLeft: "auto",
-                  marginRight: "auto",
+                  width: 32,
                   marginTop: 8,
                 }}
-                variant={"subtitle2"}
+                variant={"contained"}
+                color={"primary"}
+                onClick={handleSaveRaidClick}
               >
-                {savedRaidId}
-              </Typography>
-            )}
+                Create
+              </Button>
+              <Button
+                disabled={raidId === null}
+                style={{
+                  width: 32,
+                  marginLeft: 8,
+                  marginTop: 8,
+                }}
+                variant={"contained"}
+                color={"primary"}
+                onClick={() => handleEditRaidClick(raidId || "")}
+              >
+                Edit
+              </Button>
+              <Button
+                style={{
+                  width: 32,
+                  marginLeft: 8,
+                  marginTop: 8,
+                }}
+                variant={"contained"}
+                color={"primary"}
+                onClick={() => dispatch(_setLoadRaidDialogOpen(true))}
+              >
+                Load
+              </Button>
+            </Box>
           </Box>
           <Box display="flex" flexDirection="row">
             <Box display="flex" flexDirection="row">
@@ -167,7 +252,19 @@ const IndexPage: React.FC = () => {
               >
                 {specsLists}
               </Box>
+
               <Box style={{ marginTop: "auto", marginBottom: "auto" }}>
+                {raidId !== null && (
+                  <Typography
+                    style={{
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      width: "fit-content",
+                      marginBottom: 8,
+                    }}
+                    variant={"subtitle2"}
+                  >{`Raid ID: ${raidId}`}</Typography>
+                )}
                 <RaidGrid gridValues={gridValues} numParties={40 / partySize} />
               </Box>
             </Box>
@@ -199,6 +296,64 @@ const IndexPage: React.FC = () => {
               </Paper>
             </Box>
           </Box>
+          <LoadRaidDialog
+            open={loadRaidDialogOpen}
+            errorMsg={loadRaidError}
+            handleClose={handleLoadDialogClose}
+            handleLoadClick={_raidId => dispatch(getRaid(_raidId))}
+          />
+          <Snackbar
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            open={editRaidSnackbarOpen}
+            autoHideDuration={6000}
+            onClose={handleEditSnackbarClose}
+          >
+            <Alert onClose={handleEditSnackbarClose} severity="success">
+              Raid successfully edited!
+            </Alert>
+          </Snackbar>
+          <Snackbar
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            open={editRaidError !== undefined}
+            autoHideDuration={6000}
+            onClose={handleEditErrorSnackbarClose}
+          >
+            <Alert onClose={handleEditErrorSnackbarClose} severity="error">
+              {editRaidError}
+            </Alert>
+          </Snackbar>
+          <Snackbar
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            open={createRaidSnackbarOpen}
+            autoHideDuration={6000}
+            onClose={handleCreateSnackbarClose}
+          >
+            <Alert onClose={handleCreateSnackbarClose} severity="success">
+              Raid successfully created!
+            </Alert>
+          </Snackbar>
+          <Snackbar
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            open={createRaidError !== undefined}
+            autoHideDuration={6000}
+            onClose={handleCreateErrorSnackbarClose}
+          >
+            <Alert onClose={handleCreateErrorSnackbarClose} severity="error">
+              {createRaidError}
+            </Alert>
+          </Snackbar>
         </Container>
       </Layout>
     </DndProvider>

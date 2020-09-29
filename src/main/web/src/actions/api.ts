@@ -38,7 +38,17 @@ export async function fetchItems(): Promise<any> {
 
 export async function postRaid(
   gridValues: ClassSpec[][] | undefined[][],
+): Promise<string> {
+  return (await axios.post(`${API_URL}/raid`, gridValues)).data
+}
+
+export async function putRaid(
+  gridValues: ClassSpec[][] | undefined[][],
+  raidId: string,
 ): Promise<AxiosResponse> {
-  const response = await axios.post(`${API_URL}/raid`, gridValues)
-  return Promise.resolve(response)
+  return (await axios.put(`${API_URL}/raid/${raidId}`, gridValues)).data
+}
+
+export async function fetchRaid(raidId: string): Promise<ClassSpec[][]> {
+  return (await axios.get(`${API_URL}/raid/${raidId}`)).data
 }
