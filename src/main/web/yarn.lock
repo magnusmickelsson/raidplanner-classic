@@ -7051,7 +7051,7 @@ gatsby-plugin-react-helmet@^3.3.11:
   dependencies:
     "@babel/runtime" "^7.11.2"
 
-gatsby-plugin-sharp@^2.6.28:
+gatsby-plugin-sharp@^2.6.37:
   version "2.6.37"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-sharp/-/gatsby-plugin-sharp-2.6.37.tgz#d21fa09733a6bc6419308e466fdb06ba4ebf5628"
   integrity sha512-rZ9fdFmCe4u2VJ8tdsymamJq78J3TMfzdepkCt7++z9scBTWzLewev/F3hjk/d8BeyoSp2jVWdtqsMJJrGxpiw==
@@ -7213,10 +7213,10 @@ gatsby-source-filesystem@^2.3.30:
     valid-url "^1.0.9"
     xstate "^4.11.0"
 
-gatsby-source-graphql@^2.7.4:
-  version "2.7.4"
-  resolved "https://registry.yarnpkg.com/gatsby-source-graphql/-/gatsby-source-graphql-2.7.4.tgz#9afdfb7c1f81d0f2b4b4504b8ec374525c3bd9a8"
-  integrity sha512-tRTg8Iro7d6udy/vhxrtjyJ1YUVlaXuurFjwahiYUt9c+T0laQrp80sshLAWzZlYcsH12TpGHzVDYaxTc/7TFA==
+gatsby-source-graphql@^2.7.5:
+  version "2.7.5"
+  resolved "https://registry.yarnpkg.com/gatsby-source-graphql/-/gatsby-source-graphql-2.7.5.tgz#94c20376aec09feb29b2783635b33504da9e059b"
+  integrity sha512-BZ7lwHVutA9/+sTGoXf8KN9kciJATxHLANq6M9NgUz4K/KsVAbJ6mX7XqVO1khHSOAhlWNdRDf3iM9uWKgKR+A==
   dependencies:
     "@babel/runtime" "^7.11.2"
     "@graphql-tools/links" "^6.0.9"
@@ -7225,7 +7225,6 @@ gatsby-source-graphql@^2.7.4:
     apollo-link "1.2.14"
     apollo-link-http "^1.5.17"
     dataloader "^2.0.0"
-    graphql "^14.6.0"
     invariant "^2.2.4"
     node-fetch "^1.7.3"
     uuid "3.4.0"
