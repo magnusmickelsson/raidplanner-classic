@@ -1,3 +1,5 @@
+// TODO: Fix effectType type checking here, do not use "any"
+
 export interface Debuff {
   name: string
   effectType: any

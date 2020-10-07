@@ -7,6 +7,9 @@ import {
   fetchSpecsByFaction,
   fetchSpecsByClassForFaction,
   fetchItems,
+  postRaid,
+  putRaid,
+  fetchRaid,
 } from "../../actions/api"
 import { populateGrid } from "../../utils/appUtils"
 import { partySize, factions, numDebuffSlots } from "../../constants/wow"
@@ -22,6 +25,13 @@ interface AppState {
   debuffSlots: Debuff[] | undefined[]
   items: DebuffItem[]
   activeItems: DebuffItem[]
+  savedRaidId: string | undefined
+  loadRaidDialogOpen: boolean
+  loadRaidError: string | undefined
+  editRaidSnackbarOpen: boolean
+  editRaidError: string | undefined
+  createRaidSnackbarOpen: boolean
+  createRaidError: string | undefined
 }
 
 const initialState: AppState = {
@@ -34,6 +44,13 @@ const initialState: AppState = {
   debuffSlots: new Array(numDebuffSlots).fill(undefined),
   items: [],
   activeItems: [],
+  savedRaidId: undefined,
+  loadRaidDialogOpen: false,
+  loadRaidError: undefined,
+  editRaidSnackbarOpen: false,
+  editRaidError: undefined,
+  createRaidSnackbarOpen: false,
+  createRaidError: undefined,
 }
 
 // Slice
@@ -95,6 +112,30 @@ const appSlice = createSlice({
         state.activeItems.push(action.payload)
       }
     },
+    _setSavedRaidId: (state, action: PayloadAction<string>) => {
+      state.savedRaidId = action.payload
+    },
+    _setLoadRaidError: (state, action: PayloadAction<string | undefined>) => {
+      state.loadRaidError = action.payload
+    },
+    _setGridValues: (state, action: PayloadAction<ClassSpec[][]>) => {
+      state.gridValues = action.payload
+    },
+    _setLoadRaidDialogOpen: (state, action: PayloadAction<boolean>) => {
+      state.loadRaidDialogOpen = action.payload
+    },
+    _setEditRaidSnackbarOpen: (state, action: PayloadAction<boolean>) => {
+      state.editRaidSnackbarOpen = action.payload
+    },
+    _setEditRaidError: (state, action: PayloadAction<string | undefined>) => {
+      state.editRaidError = action.payload
+    },
+    _setCreateRaidSnackbarOpen: (state, action: PayloadAction<boolean>) => {
+      state.createRaidSnackbarOpen = action.payload
+    },
+    _setCreateRaidError: (state, action: PayloadAction<string | undefined>) => {
+      state.createRaidError = action.payload
+    },
   },
 })
 
@@ -105,7 +146,7 @@ export default appSlice.reducer
 export const appSelector = (state: RootState) => state.app
 
 // Actions
-const {
+export const {
   _getSpecs,
   _setGridValue,
   _getDebuffs,
@@ -114,6 +155,14 @@ const {
   _setDebuffSlot,
   _getItems,
   _toggleItem,
+  _setSavedRaidId,
+  _setLoadRaidError,
+  _setGridValues,
+  _setLoadRaidDialogOpen,
+  _setEditRaidSnackbarOpen,
+  _setEditRaidError,
+  _setCreateRaidSnackbarOpen,
+  _setCreateRaidError,
 } = appSlice.actions
 
 // Thunks
@@ -169,4 +218,41 @@ export const getItems = (): Thunk => (dispatch: Dispatch) => {
 
 export const toggleItem = (item: DebuffItem): Thunk => (dispatch: Dispatch) => {
   dispatch(_toggleItem(item))
+}
+
+export const saveRaid = (gridValues: ClassSpec[][] | undefined[][]): Thunk => (
+  dispatch: Dispatch,
+) => {
+  postRaid(gridValues)
+    .then(result => {
+      dispatch(_setSavedRaidId(result))
+      dispatch(_setCreateRaidSnackbarOpen(true))
+    })
+    .catch(e => {
+      dispatch(_setCreateRaidError(e.response.data))
+    })
+}
+
+export const editRaid = (
+  gridValues: ClassSpec[][] | undefined[][],
+  raidId: string,
+): Thunk => (dispatch: Dispatch) => {
+  putRaid(gridValues, raidId)
+    .then(() => dispatch(_setEditRaidSnackbarOpen(true)))
+    .catch(e => {
+      dispatch(_setEditRaidError(e.response.data))
+    })
+}
+
+export const getRaid = (raidId: string): Thunk => (dispatch: Dispatch) => {
+  fetchRaid(raidId)
+    .then(result => {
+      dispatch(_setGridValues(result))
+      dispatch(_setLoadRaidError(undefined))
+      dispatch(_setLoadRaidDialogOpen(false))
+      dispatch(_setSavedRaidId(raidId))
+    })
+    .catch(e => {
+      dispatch(_setLoadRaidError(e.response.data))
+    })
 }

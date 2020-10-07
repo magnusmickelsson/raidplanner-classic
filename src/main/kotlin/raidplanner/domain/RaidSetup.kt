@@ -2,15 +2,12 @@ package raidplanner.domain
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import java.util.*
-import javax.persistence.Basic
-import javax.persistence.Entity
-import javax.persistence.FetchType
-import javax.persistence.Id
+import javax.persistence.*
 
 val mapper = jacksonObjectMapper()
 
 @Entity
-class RaidSetup(@Id var id: String? = null, @Basic(optional = false, fetch = FetchType.EAGER) val json: String)
+class RaidSetup(@Id var id: String? = null, @Basic(optional = false, fetch = FetchType.EAGER) @Lob val json: String)
 
 fun raidSetupFromDomain(id: String?, raidGroups: RaidLayout, debuffList: DebuffList) : RaidSetup =
         RaidSetup(id ?: UUID.randomUUID().toString(), mapper.writeValueAsString(raidGroups))

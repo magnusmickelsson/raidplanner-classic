@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>raidplanner</groupId>
 	<artifactId>raidplanner</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.9.0</version>
 	<name>raidplanner</name>
 	<description>App for planning WoW classic raid and debuff slot setup</description>
 

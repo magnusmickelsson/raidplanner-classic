@@ -1,14 +1,16 @@
 {
-  "name": "gatsby-starter-default",
+  "name": "raidplanner-classic",
   "private": true,
-  "description": "A simple starter to get up and developing quickly with Gatsby",
-  "version": "0.1.0",
-  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+  "description": "Web app for World of Warcraft Classic Raid Planner",
+  "version": "0.9.0",
+  "author": "Jesper Falkenby <jesper.hansson.f@gmail.com>",
   "dependencies": {
     "@emotion/core": "^10.0.35",
     "@emotion/styled": "^10.0.27",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
+    "@reach/router": "^1.3.4",
     "@reduxjs/toolkit": "^1.4.0",
     "axios": "^0.20.0",
     "gatsby": "^2.24.65",
@@ -25,6 +27,7 @@
     "gatsby-source-graphql": "^2.7.5",
     "gatsby-transformer-sharp": "^2.5.15",
     "prop-types": "^15.7.2",
+    "query-string": "^6.13.4",
     "react": "^16.12.0",
     "react-dnd": "^11.1.3",
     "react-dnd-html5-backend": "^11.1.3",
@@ -45,8 +48,8 @@
     "@types/react-redux": "^7.1.9",
     "@typescript-eslint/eslint-plugin": "^4.2.0",
     "@typescript-eslint/parser": "^4.3.0",
-    "eslint-config-prettier": "^6.12.0",
     "eslint": "^7.10.0",
+    "eslint-config-prettier": "^6.12.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.2",
     "husky": "^4.2.5",
@@ -54,7 +57,12 @@
     "prettier": "2.1.2"
   },
   "keywords": [
-    "gatsby"
+    "gatsby",
+    "world of warcraft",
+    "wow",
+    "raid",
+    "planner",
+    "raid planner"
   ],
   "license": "0BSD",
   "scripts": {
@@ -70,10 +78,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gatsbyjs/gatsby-starter-default"
+    "url": "https://github.com/magnusmickelsson/raidplanner-classic"
   },
   "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
+    "url": "https://github.com/magnusmickelsson/raidplanner-classic/issues"
   },
   "husky": {
     "hooks": {

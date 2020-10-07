@@ -1,6 +1,7 @@
 import { partySize } from "../constants/wow"
 import { ClassSpec, Debuff, DebuffItem } from "../types/api"
 import { SpecsByClasses, GridValue } from "../types/app"
+import queryString from "query-string"
 
 export function populateGrid(numParties: number): ClassSpec[][] {
   const grid = Array(numParties)
@@ -27,6 +28,7 @@ export function findInGrid(
 
 export function getDebuffsFromGrid(
   grid: ClassSpec[][] | undefined[][],
+  specs: ClassSpec[],
   numParties: number,
 ): string[] {
   let uniqueSpecs: ClassSpec[] = []
@@ -39,8 +41,12 @@ export function getDebuffsFromGrid(
   }
 
   uniqueSpecs.forEach(item => {
-    const specDebuffs = item.canApplyDebuff.map(item => item.name)
-    uniqueDebuffs = [...new Set([...uniqueDebuffs, ...specDebuffs])]
+    const fullSpec = specs.find(spec => spec.specName === item.specName)
+
+    if (fullSpec !== undefined) {
+      const specDebuffs = fullSpec.canApplyDebuff.map(item => item.name)
+      uniqueDebuffs = [...new Set([...uniqueDebuffs, ...specDebuffs])]
+    }
   })
 
   return uniqueDebuffs
@@ -66,4 +72,16 @@ export function specsByClasses(specs: ClassSpec[]): SpecsByClasses {
   })
 
   return specsByClasses
+}
+
+export function getRaidIdFromUrlQuery(urlQuery: string): string | null {
+  const { raidId } = queryString.parse(urlQuery)
+
+  let raidIdString: string | null
+
+  if (typeof raidId === "string") raidIdString = raidId
+  else if (Array.isArray(raidId)) raidIdString = raidId[0]
+  else raidIdString = null
+
+  return raidIdString
 }
